@@ -1,4 +1,7 @@
+
+require 'pry'
 # Write your code below game_hash
+
 def game_hash
   {
     home: {
@@ -127,3 +130,144 @@ def game_hash
 end
 
 # Write code here
+
+def num_points_scored(name_input)
+  
+  points = 0
+  
+  players = game_hash[:home][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      points = player[:points]
+      # binding.pry
+    end
+  }
+  
+  players = game_hash[:away][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      points = player[:points]
+      # binding.pry
+    end
+  }
+  points
+end
+
+
+def shoe_size(name_input)
+  
+  shoe = 0
+  
+  players = game_hash[:home][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      shoe = player[:shoe]
+      # binding.pry
+    end
+  }
+  
+  players = game_hash[:away][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      shoe = player[:shoe]
+      # binding.pry
+    end
+  }
+  shoe
+end
+
+
+def team_colors(name_input)
+  
+if(game_hash[:home][:team_name] == name_input)
+  return game_hash[:home][:colors]
+else
+  return game_hash[:away][:colors]
+end
+end
+
+def team_colors(name_input)
+  
+if(game_hash[:home][:team_name] == name_input)
+  return game_hash[:home][:colors]
+else
+  return game_hash[:away][:colors]
+end
+end
+
+def team_names
+  
+  teams = []
+  
+  teams.push(game_hash[:home][:team_name])
+  teams.push(game_hash[:away][:team_name])
+  teams
+end
+
+def player_numbers(name_input)
+  
+  numbers = []
+  
+    if(name_input == "Brooklyn Nets")
+      players = game_hash[:home][:players]
+    else
+      players = game_hash[:away][:players]
+    end
+    
+    players.each{|player|
+      numbers.push(player[:number])
+    }
+  numbers
+end
+
+def player_stats(name_input)
+    
+  stats = {}
+  players = game_hash[:home][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      stats = player
+    end
+  }
+  
+  players = game_hash[:away][:players]
+  players.each{|player|
+    if(player[:player_name] == name_input)
+      stats = player
+    end
+  }
+  
+  stats
+end
+
+
+def big_shoe_rebounds
+    
+  person = {}
+  max_size = -1
+  players = game_hash[:home][:players]
+  players.each{|player|
+    if(player[:shoe] > max_size)
+      max_size = player[:shoe]
+      person = player
+    end
+  }
+  
+  players = game_hash[:away][:players]
+  players.each{|player|
+    if(player[:shoe] > max_size)
+      max_size = player[:shoe]
+      person = player
+    end
+  }
+  # binding.pry
+  person[:rebounds]
+end
+
+#     it 'returns the number of rebounds of the player with the biggest shoe size' do
+#       expect(big_shoe_rebounds).to eq(11)
+#     end
+
+#   end
+
+# end
