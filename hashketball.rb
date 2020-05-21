@@ -143,6 +143,7 @@ def num_points_scored(name_input)
     end
   }
   
+  # There is no way to know before hand which team player is on so there needs to be repetiton for searching through both teams
   players = game_hash[:away][:players]
   players.each{|player|
     if(player[:player_name] == name_input)
@@ -153,7 +154,7 @@ def num_points_scored(name_input)
   points
 end
 
-
+# Essentially identical to num_points_scored except saving a different attribute/symbol
 def shoe_size(name_input)
   
   shoe = 0
@@ -177,6 +178,7 @@ def shoe_size(name_input)
 end
 
 
+# static number of teams(2) so simple if statement to grab the colors array from either side
 def team_colors(name_input)
   
 if(game_hash[:home][:team_name] == name_input)
@@ -186,6 +188,7 @@ else
 end
 end
 
+# Accident. 
 def team_colors(name_input)
   
 if(game_hash[:home][:team_name] == name_input)
@@ -195,6 +198,7 @@ else
 end
 end
 
+# simple static info just being put into an array
 def team_names
   
   teams = []
@@ -204,6 +208,7 @@ def team_names
   teams
 end
 
+# can know from the upper levels of the hash which team's info is required so can use selection(if statement) to determine sequence for which players are in question(allows us to avoid loops unlike the first 2 functions)
 def player_numbers(name_input)
   
   numbers = []
@@ -244,7 +249,9 @@ end
 def big_shoe_rebounds
     
   person = {}
-  max_size = -1
+  max_size = -1 #can't have a negative show size
+  
+  
   players = game_hash[:home][:players]
   players.each{|player|
     if(player[:shoe] > max_size)
@@ -264,10 +271,4 @@ def big_shoe_rebounds
   person[:rebounds]
 end
 
-#     it 'returns the number of rebounds of the player with the biggest shoe size' do
-#       expect(big_shoe_rebounds).to eq(11)
-#     end
 
-#   end
-
-# end
