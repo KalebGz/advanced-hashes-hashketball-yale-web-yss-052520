@@ -1,4 +1,3 @@
-
 require 'pry'
 # Write your code below game_hash
 
@@ -131,62 +130,41 @@ end
 
 # Write code here
 def num_points_scored(name_input)
-  
   points = 0
   
-  players = game_hash[:home][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      points = player[:points]
-      # binding.pry
-    end
-  }
-  
-  players = game_hash[:away][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      points = player[:points]
-      # binding.pry
-    end
+  game_hash.each{ |side, team_stat|
+    team_stat[:players].each{|player|
+      if(player[:player_name] == name_input)
+        points = player[:points]
+      end
+    }
   }
   points
 end
 
 
 def shoe_size(name_input)
-  
   shoe = 0
-  
-  players = game_hash[:home][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      shoe = player[:shoe]
-      # binding.pry
-    end
-  }
-  
-  players = game_hash[:away][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      shoe = player[:shoe]
-      # binding.pry
-    end
+
+  game_hash.each{ |side, team_stat|
+    team_stat[:players].each{|player|
+        shoe = player[:shoe] if(player[:player_name] == name_input)
+    }
   }
   shoe
 end
 
 
 def team_colors(name_input)
-  
-if(game_hash[:home][:team_name] == name_input)
-  return game_hash[:home][:colors]
-else
-  return game_hash[:away][:colors]
-end
+
+  if(game_hash[:home][:team_name] == name_input)
+    return game_hash[:home][:colors]
+  else
+    return game_hash[:away][:colors]
+  end
 end
 
 def team_names
-  
   teams = []
   
   teams.push(game_hash[:home][:team_name])
@@ -194,8 +172,8 @@ def team_names
   teams
 end
 
+
 def player_numbers(name_input)
-  
   numbers = []
   
     if(name_input == "Brooklyn Nets")
@@ -210,23 +188,18 @@ def player_numbers(name_input)
   numbers
 end
 
+
 def player_stats(name_input)
     
   stats = {}
-  players = game_hash[:home][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      stats = player
-    end
+
+  game_hash.each{ |side, team_stat|
+    team_stat[:players].each{|player|
+      if(player[:player_name] == name_input)
+        stats = player
+      end
+    }
   }
-  
-  players = game_hash[:away][:players]
-  players.each{|player|
-    if(player[:player_name] == name_input)
-      stats = player
-    end
-  }
-  
   stats
 end
 
@@ -235,20 +208,14 @@ def big_shoe_rebounds
     
   person = {}
   max_size = -1
-  players = game_hash[:home][:players]
-  players.each{|player|
-    if(player[:shoe] > max_size)
-      max_size = player[:shoe]
-      person = player
-    end
-  }
-  
-  players = game_hash[:away][:players]
-  players.each{|player|
-    if(player[:shoe] > max_size)
-      max_size = player[:shoe]
-      person = player
-    end
+
+  game_hash.each{ |side, team_stat|
+    team_stat[:players].each{|player|
+      if(player[:shoe] > max_size)
+        max_size = player[:shoe]
+        person = player
+      end
+    }
   }
   # binding.pry
   person[:rebounds]
@@ -260,7 +227,6 @@ def most_points_scored
 best_player = ["Name", 0]  
 game_hash.each{ |side, team_stat|
   team_stat[:players].each{|player|
-  # (player[:points] > best_player[1])? (best_player[0] = player[:player_name]; best_player[1] = player[:points] ) : 0
   (best_player[0] = player[:player_name]; best_player[1] = player[:points]) if player[:points] > best_player[1]
   }
 }
@@ -297,32 +263,25 @@ def winning_team
 
   def long_name_steals_a_ton
 
-    longest_name_num = 0
+    name_num = 0
     longest_name = ""
-    max_steals = 0
+    steals_num = 0
     steals_name = ""
     
     game_hash.each{ |side, team_stat|
       team_stat[:players].each{|player|
         player_name_length = player[:player_name].split.length
         player_steals = player[:steals]
-        (player_name_length > longest_name_num)? (longest_name_num = player_name_length; longest_name = player[:player_name]) : nil
-        (max_steals > longest_name_num)? (longest_name_num = player_name_length; longest_name = player[:player_name]) : nil
+        (player_name_length > name_num)? (name_num = player_name_length; longest_name = player[:player_name]) : nil
+        (player_steals> steals_num)? (steals_num= player_steals; steals_name = player[:player_name]) : nil
     }
   }
-  longest_name == steals_name
+  longest_name ==  steals_name
   end
 
 
-puts long_name_steals_a_ton
+# puts long_name_steals_a_ton
 
 # Discussion takeaways:
-# - Use enums to avoid loop redundacy at the 
-# - Use ternary operators as opposed to if statments
-
-# Bonus functions
-# Which player has the most points? Call the method most_points_scored.
-# Which team has the most points? Call the method winning_team.
-# Which player has the longest name? Call the method player_with_longest_name.
-# Super Bonus:
-# Write a method that returns true if the player with the longest name had the most steals. Call the method long_name_steals_a_ton?.
+# - Use enums to avoid loop redundacy at top levels of nested hashes
+# - Use ternary operators as opposed to if statments/ conditoin after statement to avoid using end
