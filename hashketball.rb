@@ -130,7 +130,6 @@ def game_hash
 end
 
 # Write code here
-
 def num_points_scored(name_input)
   
   points = 0
@@ -176,15 +175,6 @@ def shoe_size(name_input)
   shoe
 end
 
-
-def team_colors(name_input)
-  
-if(game_hash[:home][:team_name] == name_input)
-  return game_hash[:home][:colors]
-else
-  return game_hash[:away][:colors]
-end
-end
 
 def team_colors(name_input)
   
@@ -264,10 +254,75 @@ def big_shoe_rebounds
   person[:rebounds]
 end
 
-#     it 'returns the number of rebounds of the player with the biggest shoe size' do
-#       expect(big_shoe_rebounds).to eq(11)
-#     end
 
-#   end
+def most_points_scored
 
-# end
+best_player = ["Name", 0]  
+game_hash.each{ |side, team_stat|
+  team_stat[:players].each{|player|
+  # (player[:points] > best_player[1])? (best_player[0] = player[:player_name]; best_player[1] = player[:points] ) : 0
+  (best_player[0] = player[:player_name]; best_player[1] = player[:points]) if player[:points] > best_player[1]
+  }
+}
+best_player[0]
+end
+
+def winning_team
+
+  # points[home team points, away team points]
+  points = [0, 0,]
+  teamIdx = 0 # Update which array index to update
+  game_hash.each{ |side, team_stat|
+  teamIdx+=1
+    team_stat[:players].each{|player|
+      points[teamIdx] += player[:points]
+    }
+  }
+  points
+  end
+
+  def player_with_longest_name
+
+    max_length = 0
+    longest_name = ""
+
+    game_hash.each{ |side, team_stat|
+      team_stat[:players].each{|player|
+        player_name_length = player[:player_name].split.length
+        (player_name_length > max_length)? (max_length = player_name_length; longest_name = player[:player_name]) : nil
+    }
+  }
+  longest_name
+  end
+
+  def long_name_steals_a_ton
+
+    longest_name_num = 0
+    longest_name = ""
+    max_steals = 0
+    steals_name = ""
+    
+    game_hash.each{ |side, team_stat|
+      team_stat[:players].each{|player|
+        player_name_length = player[:player_name].split.length
+        player_steals = player[:steals]
+        (player_name_length > longest_name_num)? (longest_name_num = player_name_length; longest_name = player[:player_name]) : nil
+        (max_steals > longest_name_num)? (longest_name_num = player_name_length; longest_name = player[:player_name]) : nil
+    }
+  }
+  longest_name == steals_name
+  end
+
+
+puts long_name_steals_a_ton
+
+# Discussion takeaways:
+# - Use enums to avoid loop redundacy at the 
+# - Use ternary operators as opposed to if statments
+
+# Bonus functions
+# Which player has the most points? Call the method most_points_scored.
+# Which team has the most points? Call the method winning_team.
+# Which player has the longest name? Call the method player_with_longest_name.
+# Super Bonus:
+# Write a method that returns true if the player with the longest name had the most steals. Call the method long_name_steals_a_ton?.
